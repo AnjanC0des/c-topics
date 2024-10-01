@@ -803,3 +803,156 @@ free(arr);
 This loop frees the memory allocated for each row and then frees the memory allocated for the array of pointers.
 Summary
 Using malloc to initialize a 2D array involves allocating memory for an array of pointers and then allocating memory for each row. This approach provides flexibility in managing dynamic 2D arrays in C.
+
+Structures in C
+Structures are user-defined data types that allow you to combine data items of different kinds. They are used to represent a record.
+
+Key Concepts
+Definition:
+A structure is defined using the struct keyword.
+Syntax:
+struct StructureName {
+    dataType member1;
+    dataType member2;
+    // more members
+};
+
+Declaration and Initialization:
+You can declare variables of the structure type and initialize them.
+Example:
+struct Person {
+    char name[50];
+    int age;
+    float salary;
+};
+
+struct Person person1 = {"John Doe", 30, 50000.0};
+
+Accessing Members:
+Members of a structure are accessed using the dot (.) operator.
+Example:
+printf("Name: %s\n", person1.name);
+printf("Age: %d\n", person1.age);
+printf("Salary: %.2f\n", person1.salary);
+
+Nested Structures:
+Structures can contain other structures as members.
+Example:
+struct Address {
+    char city[50];
+    int zip;
+};
+
+struct Person {
+    char name[50];
+    int age;
+    struct Address address;
+};
+
+struct Person person1 = {"John Doe", 30, {"New York", 10001}};
+
+Array of Structures:
+You can create an array of structures.
+Example:
+struct Person people[2] = {
+    {"John Doe", 30, 50000.0},
+    {"Jane Smith", 25, 60000.0}
+};
+
+Pointers to Structures:
+You can use pointers to structures to access members.
+Example:
+struct Person *ptr = &person1;
+printf("Name: %s\n", ptr->name);
+
+Unions in C
+Unions are similar to structures but with a key difference: all members of a union share the same memory location. This means only one member can hold a value at any given time.
+
+Key Concepts
+Definition:
+A union is defined using the union keyword.
+Syntax:
+union UnionName {
+    dataType member1;
+    dataType member2;
+    // more members
+};
+
+Declaration and Initialization:
+You can declare variables of the union type and initialize them.
+Example:
+union Data {
+    int i;
+    float f;
+    char str[20];
+};
+
+union Data data;
+data.i = 10;
+
+Accessing Members:
+Members of a union are accessed using the dot (.) operator.
+Example:
+printf("data.i: %d\n", data.i);
+data.f = 220.5;
+printf("data.f: %.2f\n", data.f);
+
+Memory Sharing:
+Since all members share the same memory, changing the value of one member affects the others.
+Example:
+data.i = 10;
+printf("data.i: %d\n", data.i);
+data.f = 220.5;
+printf("data.i: %d\n", data.i); // This will print a different value
+
+Size of Union:
+The size of a union is equal to the size of its largest member.
+Example:
+printf("Size of union: %lu\n", sizeof(data));
+
+Differences Between Structures and Unions
+Memory Allocation:
+Structure: Each member has its own memory location.
+Union: All members share the same memory location.
+Size:
+Structure: The size is the sum of the sizes of all members.
+Union: The size is the size of the largest member.
+Usage:
+Structure: Used when you need to store different values for all members.
+Union: Used when you need to store different types of data in the same memory location, but not simultaneously.
+Example to Illustrate Differences
+#include <stdio.h>
+#include <string.h>
+
+struct StructExample {
+    int integer;
+    float decimal;
+    char name[20];
+};
+
+union UnionExample {
+    int integer;
+    float decimal;
+    char name[20];
+};
+
+int main() {
+    struct StructExample s = {18, 38.5, "GeeksforGeeks"};
+    union UnionExample u;
+
+    u.integer = 18;
+    printf("Union integer: %d\n", u.integer);
+    u.decimal = 38.5;
+    printf("Union decimal: %.2f\n", u.decimal);
+    strcpy(u.name, "GeeksforGeeks");
+    printf("Union name: %s\n", u.name);
+
+    printf("Size of structure: %lu\n", sizeof(s));
+    printf("Size of union: %lu\n", sizeof(u));
+
+    return 0;
+}
+
+Summary
+Structures: Allow you to combine different data types, each with its own memory location. Useful for records where you need to store multiple related values.
+Unions: Allow you to store different data types in the same memory location, but only one at a time. Useful for memory-efficient storage when you need to store different types of data at different times.
