@@ -1,4 +1,80 @@
-Virtual Memory
+#Comp
+
+The compilation process of a C program involves several distinct steps that transform your source code into an executable program. Here’s a detailed breakdown of each step:
+
+1. Preprocessing
+The preprocessor handles directives that start with #, such as #include, #define, and #ifdef. It performs tasks like:
+
+Including header files: Replaces #include directives with the contents of the specified files.
+Macro expansion: Replaces macros defined with #define with their values.
+Conditional compilation: Includes or excludes parts of the code based on conditions.
+The output of this stage is a preprocessed source file, typically with a .i extension.
+
+2. Compilation
+The compiler translates the preprocessed source code into assembly code. This involves:
+
+Syntax analysis: Checking the code for syntax errors.
+Semantic analysis: Ensuring the code makes sense semantically.
+Optimization: Improving the code for performance.
+The output of this stage is an assembly file, usually with a .s extension.
+
+3. Assembly
+The assembler converts the assembly code into machine code, producing an object file. This involves:
+
+Translating assembly instructions: Converting them into machine instructions.
+Generating object code: Creating a binary representation of the code.
+The output of this stage is an object file, typically with a .o or .obj extension.
+
+4. Linking
+The linker combines multiple object files and libraries into a single executable. This involves:
+
+Resolving symbols: Matching function calls with their definitions.
+Combining object files: Merging them into a single executable.
+Handling libraries: Including code from static or dynamic libraries.
+The output of this stage is an executable file, usually with no extension on Unix-like systems or a .exe extension on Windows.
+
+Example
+Let’s say you have a simple C program in main.c:
+
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+
+Here’s how the compilation process works:
+
+Preprocessing:
+gcc -E main.c -o main.i
+
+This generates main.i, the preprocessed file.
+Compilation:
+gcc -S main.i -o main.s
+
+This generates main.s, the assembly file.
+Assembly:
+gcc -c main.s -o main.o
+
+This generates main.o, the object file.
+Linking:
+gcc main.o -o main
+
+This generates main, the executable file.
+When you run ./main, it will output:
+
+Hello, World!
+
+Each of these stages can be performed separately, but typically, the gcc compiler handles them all in one command:
+
+gcc main.c -o main
+
+This command preprocesses, compiles, assembles, and links the code in one step.
+
+
+
+#Virtual Memory
+
 Virtual memory is a memory management technique that creates an illusion of a large, continuous block of memory for applications, 
 even if the physical memory (RAM) is limited. It allows the system to compensate for physical memory shortages by using disk storage.
 Here are the key concepts:
@@ -34,6 +110,8 @@ each serving different purposes in program execution.
 
 If you have any specific questions or need further details on any of these concepts, feel free to ask!
 
+
+#Storage classes 
 
 Storage classes in C define the scope, visibility, and lifetime of variables and functions within a program. There are four primary storage classes in C: auto, extern, static, and register. Let’s explore each one in detail:
 
@@ -238,6 +316,8 @@ auto: The value of the auto variable will be printed each time the function is c
 extern: The value of the extern variable defined in one file will be accessed and printed in another file.
 static: The static variable will retain its value between function calls, showing an incremented count each time.
 register: The loop will print numbers from 0 to 9, demonstrating the use of a register variable.
+
+#alloc 
 
 Let’s dive into the details of dynamic memory allocation in C using malloc, calloc, and realloc. These functions are essential for managing memory dynamically, allowing you to allocate, reallocate, and free memory as needed during the runtime of your program.
 
