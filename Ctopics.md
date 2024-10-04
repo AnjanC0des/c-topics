@@ -1,4 +1,4 @@
-#Comp
+# Comp
 
 The compilation process of a C program involves several distinct steps that transform your source code into an executable program. Here’s a detailed breakdown of each step:
 
@@ -6,24 +6,34 @@ The compilation process of a C program involves several distinct steps that tran
 The preprocessor handles directives that start with #, such as #include, #define, and #ifdef. It performs tasks like:
 
 Including header files: Replaces #include directives with the contents of the specified files.
+
 Macro expansion: Replaces macros defined with #define with their values.
+
 Conditional compilation: Includes or excludes parts of the code based on conditions.
+
 The output of this stage is a preprocessed source file, typically with a .i extension.
 
 2. Compilation
 The compiler translates the preprocessed source code into assembly code. This involves:
 
 Syntax analysis: Checking the code for syntax errors.
+
 Semantic analysis: Ensuring the code makes sense semantically.
+
 Optimization: Improving the code for performance.
+
 The output of this stage is an assembly file, usually with a .s extension.
 
 3. Assembly
+   
 The assembler converts the assembly code into machine code, producing an object file. This involves:
 
 Translating assembly instructions: Converting them into machine instructions.
+
 Generating object code: Creating a binary representation of the code.
+
 The output of this stage is an object file, typically with a .o or .obj extension.
+
 
 4. Linking
 The linker combines multiple object files and libraries into a single executable. This involves:
@@ -73,7 +83,7 @@ This command preprocesses, compiles, assembles, and links the code in one step.
 
 
 
-#Virtual Memory
+# Virtual Memory
 
 Virtual memory is a memory management technique that creates an illusion of a large, continuous block of memory for applications, 
 even if the physical memory (RAM) is limited. It allows the system to compensate for physical memory shortages by using disk storage.
@@ -111,7 +121,7 @@ each serving different purposes in program execution.
 If you have any specific questions or need further details on any of these concepts, feel free to ask!
 
 
-#Storage classes 
+# Storage classes 
 
 Storage classes in C define the scope, visibility, and lifetime of variables and functions within a program. There are four primary storage classes in C: auto, extern, static, and register. Let’s explore each one in detail:
 
@@ -317,7 +327,7 @@ extern: The value of the extern variable defined in one file will be accessed an
 static: The static variable will retain its value between function calls, showing an incremented count each time.
 register: The loop will print numbers from 0 to 9, demonstrating the use of a register variable.
 
-#alloc 
+# alloc 
 
 Let’s dive into the details of dynamic memory allocation in C using malloc, calloc, and realloc. These functions are essential for managing memory dynamically, allowing you to allocate, reallocate, and free memory as needed during the runtime of your program.
 
