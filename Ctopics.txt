@@ -1187,3 +1187,78 @@ strcpy: Copies a null-terminated string.
 strncpy: Copies a specified number of characters from a string.
 sprintf: Writes formatted data to a string (unsafe for buffer overflows).
 snprintf: Writes formatted data to a string with a size limit (safer).
+
+
+The grep command is a powerful tool in Linux for searching text using patterns. Here are the nuances and details about using grep effectively:
+
+Basic Usage
+Syntax: grep [options] pattern [file...]
+Example: grep "hello" file.txt searches for the string “hello” in file.txt.
+Common Options
+Case Insensitive Search:
+grep -i "pattern" file.txt
+
+This option ignores case differences.
+Search for Whole Words:
+grep -w "pattern" file.txt
+
+This option matches only whole words.
+Count Matches:
+grep -c "pattern" file.txt
+
+This counts the number of lines that contain the pattern.
+Display Line Numbers:
+grep -n "pattern" file.txt
+
+This displays the line numbers of matching lines.
+Invert Match:
+grep -v "pattern" file.txt
+
+This option shows lines that do not match the pattern.
+Recursive Search:
+grep -r "pattern" /path/to/directory
+
+This searches for the pattern recursively in all files under the specified directory.
+Advanced Usage
+Using Regular Expressions:
+Basic Regular Expressions (BRE):
+grep "pattern.*" file.txt
+
+Matches lines containing “pattern” followed by any characters.
+Extended Regular Expressions (ERE):
+grep -E "pattern1|pattern2" file.txt
+
+Matches lines containing either “pattern1” or “pattern2”.
+Context Lines:
+Show Lines Before Match:
+grep -B 3 "pattern" file.txt
+
+Shows 3 lines before the matching line.
+Show Lines After Match:
+grep -A 3 "pattern" file.txt
+
+Shows 3 lines after the matching line.
+Show Lines Around Match:
+grep -C 3 "pattern" file.txt
+
+Shows 3 lines before and after the matching line.
+Using grep with Pipes:
+cat file.txt | grep "pattern"
+
+This pipes the output of cat to grep.
+Practical Examples
+Search Multiple Files:
+grep "pattern" file1.txt file2.txt
+
+Searches for the pattern in both file1.txt and file2.txt.
+Exclude Binary Files:
+grep -I "pattern" *
+
+Ignores binary files during the search.
+Highlight Matches:
+grep --color=auto "pattern" file.txt
+
+Highlights the matching text in the output.
+Tips
+Use Quotation Marks: Enclose patterns in single or double quotes to avoid shell interpretation.
+Escape Special Characters: Use backslashes to escape special characters in patterns.
