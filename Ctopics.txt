@@ -83,44 +83,6 @@ This command preprocesses, compiles, assembles, and links the code in one step.
 
 
 
-# Virtual Memory
-
-Virtual memory is a memory management technique that creates an illusion of a large, continuous block of memory for applications, 
-even if the physical memory (RAM) is limited. It allows the system to compensate for physical memory shortages by using disk storage.
-Here are the key concepts:
-
-Paging: Memory is divided into fixed-size blocks called pages. When the system runs out of RAM, pages not currently in use are moved 
-to a swap file on the hard drive. When needed again, they are swapped back into RAM1.
-Segmentation: Memory is divided into segments of varying sizes. Each segment can be moved to the hard drive when not in use. The system 
-uses a segment table to keep track of each segment’s status1.
-Demand Paging: Pages are loaded into memory only when needed, reducing the amount of memory required and improving efficiency1.
-Page Fault: Occurs when a program tries to access a page not currently in memory. The operating system then loads the required page from 
-the disk into RAM1.
-Thrashing: Happens when the system spends more time swapping pages in and out of memory than executing instructions. This can severely 
-degrade performance1.
-Memory Segments in C
-In C, a program’s memory is divided into several segments:
-
-Text Segment: Contains the compiled program code, including instructions and constants. This segment is usually read-only to prevent
-accidental modification of instructions2.
-Data Segment: Divided into two parts:
-Initialized Data Segment: Contains global and static variables that are initialized by the programmer.
-Uninitialized Data Segment (BSS): Contains global and static variables that are not initialized by the programmer. These are initialized to zero by the system2.
-Heap: Used for dynamic memory allocation. Functions like malloc, calloc, and realloc allocate memory from the heap. The heap grows upwards as more memory is allocated2.
-Stack: Used for function call management. It stores local variables, function parameters, and return addresses. The stack grows downwards as
-functions are called and shrinks as functions return2.
-Combining Paging and Segmentation
-Sometimes, both paging and segmentation are used together. In this case, memory is divided into pages, and segments are made up of multiple pages. 
-The virtual address includes both a segment number and a page number1.
-
-Summary
-Virtual memory allows systems to run larger applications on limited physical memory by using disk storage. It involves concepts like paging, 
-segmentation, demand paging, and handling page faults. In C, memory is divided into segments like the text segment, data segment, heap, and stack,
-each serving different purposes in program execution.
-
-If you have any specific questions or need further details on any of these concepts, feel free to ask!
-
-
 # Storage classes 
 
 Storage classes in C define the scope, visibility, and lifetime of variables and functions within a program. There are four primary storage classes in C: auto, extern, static, and register. Let’s explore each one in detail:
