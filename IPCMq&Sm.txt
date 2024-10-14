@@ -1,0 +1,100 @@
+Inter-process communication (IPC) mechanisms like message queues and shared memory are essential for enabling processes to communicate and synchronize their actions. Here’s a detailed look at both:
+
+Message Queues
+Overview:
+
+Message queues allow processes to communicate by sending and receiving messages.
+They provide asynchronous communication, meaning the sender and receiver do not need to interact with the queue simultaneously1.
+Key Features:
+
+Asynchronous Communication:
+Processes can send messages to the queue without waiting for the receiver to be ready.
+The receiver can retrieve messages from the queue at its convenience.
+Message Persistence:
+Messages remain in the queue until they are explicitly removed by a receiving process.
+FIFO Order:
+Messages are typically retrieved in the order they were added (First In, First Out).
+Usage in C:
+
+Use the msgget, msgsnd, and msgrcv system calls to create and manage message queues.
+Example:
+
+#include <stdio.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+
+struct message {
+    long msg_type;
+    char msg_text[100];
+};
+
+int main() {
+    key_t key;
+    int msgid;
+    struct message msg;
+
+    // Generate unique key
+    key = ftok("progfile", 65);
+
+    // Create message queue and return id
+    msgid = msgget(key, 0666 | IPC_CREAT);
+    msg.msg_type = 1;
+
+    printf("Write Data: ");
+    fgets(msg.msg_text, sizeof(msg.msg_text), stdin);
+
+    // Send message
+    msgsnd(msgid, &msg, sizeof(msg), 0);
+
+    printf("Data sent is : %s \n", msg.msg_text);
+
+    return 0;
+}
+
+Shared Memory
+Overview:
+
+Shared memory allows multiple processes to access the same memory space.
+It is the fastest form of IPC because processes can directly read and write to the shared memory without needing to copy data.
+Key Features:
+
+Direct Access:
+Processes can directly read from and write to the shared memory segment.
+Synchronization Required:
+Since multiple processes can access the shared memory simultaneously, synchronization mechanisms (like semaphores) are needed to prevent race conditions.
+Efficient Communication:
+Ideal for large amounts of data because it avoids the overhead of copying data between processes.
+Usage in C:
+
+Use the shmget, shmat, shmdt, and shmctl system calls to create and manage shared memory segments.
+Example:
+
+#include <stdio.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <string.h>
+
+int main() {
+    key_t key = ftok("shmfile", 65);
+    int shmid = shmget(key, 1024, 0666 | IPC_CREAT);
+    char *str = (char*) shmat(shmid, (void*)0, 0);
+
+    printf("Write Data: ");
+    fgets(str, 1024, stdin);
+
+    printf("Data written in memory: %s\n", str);
+
+    shmdt(str);
+
+    return 0;
+}
+
+Comparison
+Message Queues:
+Suitable for smaller, discrete messages.
+Asynchronous communication.
+Easier to manage without needing explicit synchronization.
+Shared Memory:
+Suitable for large amounts of data.
+Requires explicit synchronization.
+Faster due to direct memory access.
