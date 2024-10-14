@@ -1,0 +1,205 @@
+# Storage classes 
+
+Storage classes in C define the scope, visibility, and lifetime of variables and functions within a program. There are four primary storage classes in C: auto, extern, static, and register. Let’s explore each one in detail:
+
+1. auto Storage Class
+Scope: Local to the block in which the variable is defined.
+Lifetime: Exists only during the execution of the block in which it is defined.
+Default Initialization: Uninitialized variables have garbage values.
+Usage: This is the default storage class for all local variables. The auto keyword is rarely used explicitly because it is the default.
+Example:
+#include <stdio.h>
+
+void autoStorageClass() {
+    auto int a = 10; // auto is optional here
+    printf("Value of auto variable a: %d\n", a);
+}
+
+int main() {
+    autoStorageClass();
+    return 0;
+}
+
+2. extern Storage Class
+Scope: Global, can be accessed across multiple files.
+Lifetime: Exists for the entire duration of the program.
+Default Initialization: Initialized to zero if not explicitly initialized.
+Usage: Used to declare a global variable or function in another file.
+Example:
+// File1.c
+#include <stdio.h>
+
+extern int x; // Declaration of extern variable
+
+void externStorageClass() {
+    printf("Value of extern variable x: %d\n", x);
+}
+
+// File2.c
+#include <stdio.h>
+
+int x = 10; // Definition of extern variable
+
+int main() {
+    externStorageClass();
+    return 0;
+}
+
+3. static Storage Class
+Scope: Local to the block in which the variable is defined, but retains its value between function calls.
+Lifetime: Exists for the entire duration of the program.
+Default Initialization: Initialized to zero if not explicitly initialized.
+Usage: Used to maintain the state of a variable between function calls or to limit the scope of a global variable to the file in which it is declared.
+Example:
+#include <stdio.h>
+
+void staticStorageClass() {
+    static int count = 0; // Static variable
+    count++;
+    printf("Static count: %d\n", count);
+}
+
+int main() {
+    staticStorageClass();
+    staticStorageClass();
+    staticStorageClass();
+    return 0;
+}
+
+4. register Storage Class
+Scope: Local to the block in which the variable is defined.
+Lifetime: Exists only during the execution of the block in which it is defined.
+Default Initialization: Uninitialized variables have garbage values.
+Usage: Suggests that the variable be stored in a CPU register instead of RAM for faster access. However, the compiler may ignore this suggestion.
+Example:
+#include <stdio.h>
+
+void registerStorageClass() {
+    register int i;
+    for (i = 0; i < 10; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+}
+
+int main() {
+    registerStorageClass();
+    return 0;
+}
+
+Summary
+auto: Default for local variables, limited to the block scope.
+extern: Used for global variables and functions, accessible across multiple files.
+static: Retains value between function calls, limited to the file scope for global variables.
+register: Suggests storing the variable in a CPU register for faster access.
+These storage classes help manage the scope, visibility, and lifetime of variables and functions, ensuring efficient memory usage and program behavior.
+
+  
+
+You
+Sent by you:
+i want to demonstrate how different storage classes work in c, how do i do it using programs
+Copilot
+Sent by Copilot:
+To demonstrate how different storage classes work in C, you can write and run small programs that illustrate the behavior of auto, extern, static, and register variables. Here are examples for each storage class:
+
+1. auto Storage Class
+Since auto is the default storage class for local variables, you don’t need to explicitly use the auto keyword. Here’s a simple example:
+
+#include <stdio.h>
+
+void autoStorageClass() {
+    auto int a = 10; // auto is optional here
+    printf("Value of auto variable a: %d\n", a);
+}
+
+int main() {
+    autoStorageClass();
+    return 0;
+}
+
+2. extern Storage Class
+To demonstrate extern, you need to use two files. One file will declare the extern variable, and the other will define it.
+
+File1.c:
+#include <stdio.h>
+
+extern int x; // Declaration of extern variable
+
+void externStorageClass() {
+    printf("Value of extern variable x: %d\n", x);
+}
+
+File2.c:
+#include <stdio.h>
+
+int x = 10; // Definition of extern variable
+
+int main() {
+    externStorageClass();
+    return 0;
+}
+
+Compile and link the files together:
+
+gcc File1.c File2.c -o extern_demo
+./extern_demo
+
+3. static Storage Class
+You can demonstrate static by showing how a static variable retains its value between function calls.
+
+#include <stdio.h>
+
+void staticStorageClass() {
+    static int count = 0; // Static variable
+    count++;
+    printf("Static count: %d\n", count);
+}
+
+int main() {
+    staticStorageClass();
+    staticStorageClass();
+    staticStorageClass();
+    return 0;
+}
+
+4. register Storage Class
+To demonstrate register, you can suggest that a variable be stored in a CPU register. Note that the compiler may ignore this suggestion.
+
+#include <stdio.h>
+
+void registerStorageClass() {
+    register int i;
+    for (i = 0; i < 10; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+}
+
+int main() {
+    registerStorageClass();
+    return 0;
+}
+
+Running the Programs
+Compile and Run auto Example:
+gcc -o auto_demo auto_demo.c
+./auto_demo
+
+Compile and Run extern Example:
+gcc File1.c File2.c -o extern_demo
+./extern_demo
+
+Compile and Run static Example:
+gcc -o static_demo static_demo.c
+./static_demo
+
+Compile and Run register Example:
+gcc -o register_demo register_demo.c
+./register_demo
+
+Explanation of Output
+auto: The value of the auto variable will be printed each time the function is called.
+extern: The value of the extern variable defined in one file will be accessed and printed in another file.
+static: The static variable will retain its value between function calls, showing an incremented count each time.
+register: The loop will print numbers from 0 to 9, demonstrating the use of a register variable.
