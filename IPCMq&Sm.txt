@@ -197,3 +197,94 @@ int main() {
 }
 
 These examples illustrate basic usage of message queues and shared memory in C.
+
+
+
+Example: Sending and Receiving Messages
+Sender Program
+This program creates a message queue and sends a message to it.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <string.h>
+
+struct msg_buffer {
+    long msg_type;
+    char msg_text[100];
+};
+
+int main() {
+    key_t key;
+    int msgid;
+    struct msg_buffer message;
+
+    // Generate a unique key
+    key = ftok("progfile", 65);
+
+    // Create a message queue and return the identifier
+    msgid = msgget(key, 0666 | IPC_CREAT);
+    message.msg_type = 1;
+
+    printf("Write Data: ");
+    fgets(message.msg_text, sizeof(message.msg_text), stdin);
+
+    // Send the message
+    msgsnd(msgid, &message, sizeof(message), 0);
+
+    printf("Data sent is: %s\n", message.msg_text);
+
+    return 0;
+}
+
+Receiver Program
+This program receives the message from the message queue.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+
+struct msg_buffer {
+    long msg_type;
+    char msg_text[100];
+};
+
+int main() {
+    key_t key;
+    int msgid;
+    struct msg_buffer message;
+
+    // Generate a unique key
+    key = ftok("progfile", 65);
+
+    // Get the message queue identifier
+    msgid = msgget(key, 0666 | IPC_CREAT);
+
+    // Receive the message
+    msgrcv(msgid, &message, sizeof(message), 1, 0);
+
+    // Display the message
+    printf("Data received is: %s\n", message.msg_text);
+
+    // Destroy the message queue
+    msgctl(msgid, IPC_RMID, NULL);
+
+    return 0;
+}
+
+Explanation
+msgget:
+Sender: Creates a message queue or gets the identifier of an existing one using msgget(key, 0666 | IPC_CREAT).
+Receiver: Gets the identifier of the existing message queue using msgget(key, 0666 | IPC_CREAT).
+msgsnd:
+Sender: Sends a message to the queue using msgsnd(msgid, &message, sizeof(message), 0).
+msgrcv:
+Receiver: Receives a message from the queue using msgrcv(msgid, &message, sizeof(message), 1, 0).
+Message Structure:
+Both programs use a struct msg_buffer to define the message format, which includes a msg_type and msg_text.
+Key Generation:
+Both programs use ftok("progfile", 65) to generate a unique key for the message queue.
+Queue Cleanup:
+The receiver program destroys the message queue using msgctl(msgid, IPC_RMID, NULL) after receiving the message.
