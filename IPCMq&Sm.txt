@@ -98,3 +98,102 @@ Shared Memory:
 Suitable for large amounts of data.
 Requires explicit synchronization.
 Faster due to direct memory access.
+
+
+Inter-Process Communication (IPC) mechanisms like message queues and shared memory are essential for enabling processes to communicate and synchronize their actions. Here’s a detailed overview of these two IPC mechanisms:
+
+Message Queues
+Message queues provide a way for processes to communicate by sending and receiving messages. This method is asynchronous, meaning the sender and receiver do not need to interact with the queue simultaneously.
+
+Key Concepts:
+Message Queue Identifier: Each message queue is identified by a unique identifier.
+Messages: Messages are stored in the queue and can have a fixed or variable size.
+Operations:
+Send (msgsnd): Adds a message to the queue.
+Receive (msgrcv): Retrieves a message from the queue.
+Blocking and Non-blocking: Operations can be blocking (waits if the queue is full/empty) or non-blocking (returns immediately if the queue is full/empty).
+Permissions: Access to the message queue can be controlled using permissions.
+Advantages:
+Decoupling: Processes do not need to be aware of each other’s existence.
+Asynchronous Communication: Processes can operate independently.
+Disadvantages:
+Overhead: Managing message queues can introduce overhead.
+Limited Size: Message queues have a size limit, which can be a constraint for large messages.
+Shared Memory
+Shared memory allows multiple processes to access the same memory space. It is one of the fastest IPC mechanisms because it avoids the overhead of message passing.
+
+Key Concepts:
+Shared Memory Segment: A block of memory that can be accessed by multiple processes.
+System Calls:
+shmget: Allocates a shared memory segment.
+shmat: Attaches the shared memory segment to the process’s address space.
+shmdt: Detaches the shared memory segment from the process’s address space.
+shmctl: Controls operations on the shared memory segment (e.g., deallocation).
+Synchronization: Since multiple processes can access the shared memory simultaneously, synchronization mechanisms (like semaphores) are needed to prevent race conditions.
+Advantages:
+Speed: Direct memory access is very fast.
+Efficiency: Suitable for large amounts of data.
+Disadvantages:
+Complexity: Requires careful synchronization to avoid data corruption.
+Security: Shared memory segments need to be protected from unauthorized access.
+Comparison
+Message Queues:
+Use Case: Suitable for scenarios where processes need to exchange discrete messages.
+Synchronization: Implicitly handled by the message queue.
+Performance: Slower due to the overhead of message passing.
+Shared Memory:
+Use Case: Ideal for scenarios requiring fast access to large amounts of data.
+Synchronization: Explicitly handled by the developer using synchronization primitives.
+Performance: Faster due to direct memory access.
+Practical Example
+Message Queue Example:
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+struct msg_buffer {
+    long msg_type;
+    char msg_text[100];
+};
+
+int main() {
+    key_t key;
+    int msgid;
+    struct msg_buffer message;
+
+    key = ftok("progfile", 65);
+    msgid = msgget(key, 0666 | IPC_CREAT);
+    message.msg_type = 1;
+
+    printf("Write Data: ");
+    fgets(message.msg_text, 100, stdin);
+
+    msgsnd(msgid, &message, sizeof(message), 0);
+    printf("Data sent is : %s \n", message.msg_text);
+
+    return 0;
+}
+
+Shared Memory Example:
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    key_t key = ftok("shmfile", 65);
+    int shmid = shmget(key, 1024, 0666 | IPC_CREAT);
+    char *str = (char*) shmat(shmid, (void*)0, 0);
+
+    printf("Write Data: ");
+    fgets(str, 1024, stdin);
+
+    printf("Data written in memory: %s\n", str);
+    shmdt(str);
+
+    return 0;
+}
+
+These examples illustrate basic usage of message queues and shared memory in C.
