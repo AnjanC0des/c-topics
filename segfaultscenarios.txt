@@ -1,0 +1,63 @@
+1. Dereferencing Null Pointers
+Attempting to access or modify data through a pointer that has not been initialized (i.e., it points to NULL).
+
+int *ptr = NULL;
+*ptr = 42;  // Causes segmentation fault
+
+2. Dereferencing Uninitialized Pointers
+Using pointers that have not been assigned a valid memory address.
+
+int *ptr;
+*ptr = 42;  // Causes segmentation fault
+
+3. Dereferencing Freed Pointers
+Accessing memory through a pointer after the memory has been freed.
+
+int *ptr = malloc(sizeof(int));
+free(ptr);
+*ptr = 42;  // Causes segmentation fault
+
+4. Buffer Overflows
+Writing data beyond the boundaries of an allocated array.
+
+int arr[5];
+arr[10] = 42;  // Causes segmentation fault
+
+5. Stack Overflow
+Exceeding the stack size limit, often due to deep or infinite recursion.
+
+void recursiveFunction() {
+    recursiveFunction();  // Causes stack overflow
+}
+
+6. Accessing Memory Out of Bounds
+Reading or writing outside the allocated memory bounds of an array.
+
+int arr[5];
+int value = arr[10];  // Causes segmentation fault
+
+7. Writing to Read-Only Memory
+Attempting to modify a string literal or other read-only data.
+
+char *str = "Hello, World!";
+str[0] = 'h';  // Causes segmentation fault
+
+8. Using Invalid Memory Addresses
+Using arbitrary or invalid memory addresses as pointers.
+
+int *ptr = (int *)0x12345678;
+*ptr = 42;  // Causes segmentation fault
+
+9. Improper Memory Management
+Errors in dynamic memory allocation and deallocation, such as double-freeing memory.
+
+int *ptr = malloc(sizeof(int));
+free(ptr);
+free(ptr);  // Causes segmentation fault
+
+10. Incorrect Type Casting
+Casting pointers to incorrect types and then dereferencing them.
+
+void *ptr = malloc(sizeof(int));
+char *charPtr = (char *)ptr;
+*charPtr = 'a';  // Causes segmentation fault
