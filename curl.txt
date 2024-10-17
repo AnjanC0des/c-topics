@@ -1,0 +1,71 @@
+The libcurl library is a powerful tool for making network requests in C and C++ programs. It supports a wide range of protocols, including HTTP, HTTPS, FTP, and more. Here are some of the key functions and concepts you need to know when using libcurl in C programming:
+
+Key libcurl Functions
+Initialization and Cleanup
+curl_global_init: Initializes the libcurl library. This function must be called before any other libcurl functions.
+curl_global_init(CURL_GLOBAL_DEFAULT);
+
+curl_global_cleanup: Cleans up resources used by libcurl. This should be called when you are done using libcurl.
+curl_global_cleanup();
+
+Creating and Configuring a CURL Handle
+curl_easy_init: Creates a CURL easy handle, which is used to perform a transfer.
+CURL *curl = curl_easy_init();
+
+curl_easy_setopt: Sets options for the CURL handle. This function is used to configure the request.
+curl_easy_setopt(curl, CURLOPT_URL, "http://example.com");
+
+Performing a Transfer
+curl_easy_perform: Performs the transfer as described by the options set with curl_easy_setopt.
+CURLcode res = curl_easy_perform(curl);
+if(res != CURLE_OK) {
+    fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+}
+
+Cleanup
+curl_easy_cleanup: Cleans up the CURL easy handle.
+curl_easy_cleanup(curl);
+
+Example: Simple HTTP GET Request
+Here’s a complete example of a simple HTTP GET request using libcurl:
+
+#include <stdio.h>
+#include <curl/curl.h>
+
+int main(void) {
+    CURL *curl;
+    CURLcode res;
+
+    // Initialize libcurl
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init();
+    if(curl) {
+        // Set the URL for the request
+        curl_easy_setopt(curl, CURLOPT_URL, "http://example.com");
+
+        // Perform the request
+        res = curl_easy_perform(curl);
+        if(res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        }
+
+        // Cleanup
+        curl_easy_cleanup(curl);
+    }
+
+    // Cleanup libcurl
+    curl_global_cleanup();
+    return 0;
+}
+
+Advanced Features
+libcurl offers many advanced features, such as:
+
+Handling Cookies: CURLOPT_COOKIEFILE, CURLOPT_COOKIEJAR
+HTTP POST Requests: CURLOPT_POST, CURLOPT_POSTFIELDS
+File Uploads: CURLOPT_UPLOAD, CURLOPT_READDATA
+SSL/TLS: CURLOPT_SSL_VERIFYPEER, CURLOPT_SSL_VERIFYHOST
+Resources
+Official Documentation: The libcurl documentation provides comprehensive details on all available functions and options1.
+Examples: The libcurl examples page offers a variety of sample code snippets2.
+Using libcurl can greatly simplify the process of making network requests in your C programs. If you have any specific questions or need further assistance, feel free to ask!
