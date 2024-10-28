@@ -1,0 +1,119 @@
+To work with JSON in C, you’ll typically use libraries like libcurl for HTTP requests and cJSON for parsing JSON data. Here’s a basic outline of how you can frame, send, and receive JSON requests in C:
+
+1. Setting Up Your Environment
+First, ensure you have libcurl and cJSON installed. You can install them using a package manager like apt on Linux:
+
+sudo apt-get install libcurl4-openssl-dev
+sudo apt-get install libcjson-dev
+
+2. Sending a JSON Request
+Here’s an example of how to send a POST request with JSON data using libcurl:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <curl/curl.h>
+#include <cjson/cJSON.h>
+
+void send_json_request() {
+    CURL *curl;
+    CURLcode res;
+
+    // Initialize cURL
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init();
+
+    if(curl) {
+        // JSON data to send
+        cJSON *json = cJSON_CreateObject();
+        cJSON_AddStringToObject(json, "name", "John Doe");
+        cJSON_AddNumberToObject(json, "age", 30);
+        char *json_data = cJSON_Print(json);
+
+        // Set cURL options
+        curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/api");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/json");
+
+        // Perform the request
+        res = curl_easy_perform(curl);
+
+        // Check for errors
+        if(res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        }
+
+        // Cleanup
+        cJSON_Delete(json);
+        curl_easy_cleanup(curl);
+    }
+
+    curl_global_cleanup();
+}
+
+int main() {
+    send_json_request();
+    return 0;
+}
+
+3. Receiving and Parsing JSON Response
+To handle the response, you can use a callback function to capture the data and then parse it with cJSON:
+
+size_t write_callback(void *ptr, size_t size, size_t nmemb, char *data) {
+    strcat(data, (char *)ptr);
+    return size * nmemb;
+}
+
+void receive_json_response() {
+    CURL *curl;
+    CURLcode res;
+    char response_data[1024] = {0};
+
+    // Initialize cURL
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init();
+
+    if(curl) {
+        // Set cURL options
+        curl_easy_setopt(curl, CURLOPT_URL, "https://example.com/api");
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, response_data);
+
+        // Perform the request
+        res = curl_easy_perform(curl);
+
+        // Check for errors
+        if(res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        } else {
+            // Parse JSON response
+            cJSON *json = cJSON_Parse(response_data);
+            if (json == NULL) {
+                fprintf(stderr, "Error parsing JSON response\n");
+            } else {
+                // Process JSON data
+                cJSON *name = cJSON_GetObjectItem(json, "name");
+                if (cJSON_IsString(name)) {
+                    printf("Name: %s\n", name->valuestring);
+                }
+                cJSON_Delete(json);
+            }
+        }
+
+        // Cleanup
+        curl_easy_cleanup(curl);
+    }
+
+    curl_global_cleanup();
+}
+
+int main() {
+    receive_json_response();
+    return 0;
+}
+
+Summary
+libcurl handles the HTTP requests.
+cJSON is used for creating and parsing JSON data.
+The write_callback function captures the response data.
+This should give you a solid starting point for working with JSON in C. If you have any specific questions or run into issues, feel free to ask!
