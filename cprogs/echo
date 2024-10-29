@@ -4,7 +4,6 @@
 	
 void main(){
 	int numbers[4]={410241396,410241397,410241398,410241399};
-	char buffer[200]; 
 	char *out=NULL;
 	cJSON *root = cJSON_CreateObject();
 	cJSON *json_array = cJSON_CreateArray();
@@ -13,8 +12,7 @@ void main(){
 	}
 	cJSON_AddItemToObject(root,"key",json_array);
 	out=cJSON_Print(root);
-	sprintf(buffer,"%s",out);
-	printf("%s\n",buffer);
+	printf("%s\n",out);
 	cJSON_Delete(root);
 	free(out);
 	return;
