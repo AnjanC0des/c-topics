@@ -1,0 +1,1 @@
+gcc -o out main.c -I/usr/include/cjson -L/usr/lib -lcjson
